@@ -8,12 +8,16 @@ const routes = [
       { path: '/pagos', component: () => import('pages/PagosPage.vue') },
       { path: '/areas', component: () => import('pages/DesaPage.vue') },
       { path: '/calendar', component: () => import('pages/DesaPage.vue') },
-      { path: '/asistencia', component: () => import('pages/DesaPage.vue') },
-      { path: '/ficha', component: () => import('pages/DesaPage.vue') },
+
+
       { path: '/certificado', component: () => import('pages/DesaPage.vue') },
     ]
   },
-  //ficha- certificado
+   //ficha- certificado
+  { path: '/ficha', component: () => import('pages/ObtenerFicha.vue') },
+  //asistencia
+  { path: '/asistencia', component: () => import('pages/Asistencia.vue') },
+
   // Always leave this as last one,
   // but you can also remove it
   {

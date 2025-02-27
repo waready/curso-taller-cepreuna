@@ -40,7 +40,7 @@ export default defineComponent({
         {
           title: "Cantidad Inscritos",
           icon: "pie_chart",
-          value: "Cargando...",
+          //value: "Cargando...",
           color1: "#1976D2",
           color2: "#1565C0",
           to: "/inscritos"
@@ -48,7 +48,7 @@ export default defineComponent({
         {
           title: "Cantidad Pagos",
           icon: "bar_chart",
-          value: "Cargando...",
+          //value: "Cargando...",
           color1: "#26A69A",
           color2: "#00897B",
           to: "/pagos"
@@ -56,7 +56,7 @@ export default defineComponent({
         {
           title: "Aun no Inscritos",
           icon: "area_chart",
-          value: "Cargando...",
+          //value: "Cargando...",
           color1: "#FBC02D",  // Amarillo vibrante (basado en Material Design)
           color2: "#F9A825",  // Amarillo más oscuro para contraste
           to: "/"

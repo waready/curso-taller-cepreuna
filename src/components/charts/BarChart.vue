@@ -2,15 +2,14 @@
   <div>
     <q-card class="no-shadow" bordered>
       <q-card-section class="text-h6">
-        Cantidad Inscritos por Áreas 
+        Cantidad Inscritos por Áreas
         <h5 v-if="sede">Sede: {{ sede }}</h5>
         <q-btn icon="fa fa-download" class="float-right" @click="SaveImage" flat dense>
           <q-tooltip>Download PNG</q-tooltip>
         </q-btn>
       </q-card-section>
       <q-card-section>
-        <ECharts ref="barchart" :option="options" 
-        class="q-mt-md" :resizable="true" autoresize style="height: 285px" />
+        <ECharts ref="barchart" :option="options" class="q-mt-md" :resizable="true" autoresize style="height: 285px" />
       </q-card-section>
     </q-card>
   </div>
@@ -28,11 +27,20 @@ export default defineComponent({
   props: ["sede"],
   setup() {
     const options = ref({
-      legend: { 
-        bottom: 10, 
+      legend: {
+        bottom: 10,
         data: [] // Se llenará dinámicamente con los nombres de las áreas
       },
-      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+      tooltip: {
+        trigger: "axis", axisPointer: { type: "shadow" }, formatter: function (params) {
+          let tooltipText = `<b>Cantidad de inscritos</b><br/>`;
+          console.log("params",params)
+          params.forEach((item) => {
+            tooltipText += `${item.marker} ${item.seriesName}: <b>${item.value}</b><br/>`;
+          });
+          return tooltipText;
+        }
+      },
       dataset: { source: [] },
       grid: {
         left: "3%",
@@ -42,7 +50,10 @@ export default defineComponent({
         containLabel: true,
       },
       xAxis: { type: "category" },
-      yAxis: {},
+      yAxis: {
+        name: "Cantidad de inscritos",
+        nameLocation: "end",
+      },
       series: [],
     });
 
@@ -77,11 +88,11 @@ export default defineComponent({
           series.push({
             name: areaName,
             type: "bar",
-           // itemStyle: { color: colors[item.area] || "#000000" },
+            // itemStyle: { color: colors[item.area] || "#000000" },
             data: [item.total], // Asigna los datos correctamente
           });
         });
-       
+
         options.value.legend.data = legendData; // Asignar nombres de las áreas a la leyenda
         options.value.dataset.source = dataset;
         options.value.series = series;

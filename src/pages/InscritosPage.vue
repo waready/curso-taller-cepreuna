@@ -19,8 +19,8 @@
                             </q-btn> -->
 
 
-                            <!-- <q-btn color="primary" icon-right="archive" label="Exportar a CSV" no-caps
-                                @click="exportTable" /> -->
+                            <q-btn color="primary" icon-right="archive" label="Exportar" no-caps
+                                @click="exportTable" />
                         </template>
                         <!-- 🎨 Área con `q-badge` -->
                         <template v-slot:body-cell-area="props">
