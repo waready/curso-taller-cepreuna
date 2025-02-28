@@ -67,11 +67,17 @@ const linksList = [
     to: '/ficha'              // '/ficha'
   },
   {
-    title: 'Validar su Asistencia',
+    title: 'Validar su Asistencia D1',
     //caption: 'Control de asistencia',
     icon: 'how_to_reg',    // Icono Material
     to: '/asistencia'              // '/asistencia'
   },
+  // {
+  //   title: 'Validar su Asistencia D2',
+  //   //caption: 'Control de asistencia',
+  //   icon: 'how_to_reg',    // Icono Material
+  //   to: '/asistenciaD2'              // '/asistencia'
+  // },
   {
     title: 'Obtener su Certificado',
     //caption: 'Descargar certificado',

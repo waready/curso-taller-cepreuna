@@ -122,7 +122,9 @@ export default defineComponent({
             },
             { name: 'celular', align: 'left', label: 'Celular', field: 'celular' },
             { name: 'condicion', align: 'left', label: 'Condicion', field: 'condicion', sortable: true },
-            { name: 'asistencia', align: 'left', label: 'Asistencia', field: 'asistencia' },
+            { name: 'asistencia', align: 'left', label: 'Asistencia D1', field: 'asistencia' },
+            { name: 'asistencia_d1_2', align: 'left', label: 'Asistencia D1-2', field: 'asistencia_d1_2' },
+            { name: 'asistencia_d2"', align: 'left', label: 'Asistencia D2', field: 'asistencia_d2' },
             { name: 'path', align: 'left', label: 'Ficha', field: 'path' },
         ];
 

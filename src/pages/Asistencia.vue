@@ -5,12 +5,14 @@
         <q-card class="login-form">
           <q-card-section class="avatar-section">
             <q-avatar size="80px" class="shadow-10">
-              <img src="https://next-quasar-admin.netlify.app/profile.svg">
+              <img src="https://next-quasar-admin.netlify.app/profile.svg" />
             </q-avatar>
           </q-card-section>
 
           <q-card-section class="q-mt-md text-center">
-            <div class="text-h5 text-bold text-white">Control de Asistencia</div>
+            <div class="text-h5 text-bold text-white">
+              Control de Asistencia Día 1 - Turno Tarde
+            </div>
           </q-card-section>
 
           <q-card-section class="input-section">
@@ -33,6 +35,7 @@
               class="btn-unlock"
               color="primary"
               :loading="loading"
+              :disable="dni.length !== 8"
               @click="registrarAsistencia"
             />
           </q-card-actions>
@@ -43,7 +46,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, nextTick } from "vue";
+import { defineComponent, ref, onMounted, nextTick, watch } from "vue";
 import axios from "axios";
 import { useQuasar } from "quasar";
 
@@ -55,31 +58,41 @@ export default defineComponent({
     const loading = ref(false);
     const $q = useQuasar();
 
-    // Enfocar automáticamente el input
+    // Enfocar automáticamente el input al montar
     onMounted(() => {
       nextTick(() => {
-        if (dniInput.value) {
-          dniInput.value.focus();
-        }
+        dniInput.value?.focus();
       });
     });
 
-    // Método para mostrar notificaciones con el mensaje correcto
+    // Mostrar notificaciones
     const showNotif = (message, type = "negative") => {
       $q.notify({
         position: "top-right",
-        message: message,
+        message,
         color: type,
-        icon: type === "positive" ? "check_circle" : type === "warning" ? "warning" : "report_problem",
+        icon:
+          type === "positive"
+            ? "check_circle"
+            : type === "warning"
+            ? "warning"
+            : "report_problem",
         timeout: 5000,
         actions: [{ label: "Cerrar", color: "white" }],
       });
     };
 
-    // Método para registrar asistencia
+    // Watch para detectar cuando el DNI tiene 8 dígitos y registrar automáticamente
+    watch(dni, (newVal) => {
+      if (newVal.length === 8) {
+        registrarAsistencia();
+      }
+    });
+
+    // Registrar asistencia
     const registrarAsistencia = async () => {
-      if (!dni.value) {
-        showNotif("Ingrese un número de documento.", "negative");
+      if (dni.value.length !== 8) {
+        showNotif("El DNI debe tener 8 dígitos.", "negative");
         return;
       }
 
@@ -92,19 +105,24 @@ export default defineComponent({
           { headers: { Authorization: "cepreuna_v1_api" } }
         );
 
-        // Revisamos si el mensaje es de éxito o advertencia
         if (response.data.message.includes("ya registró su asistencia")) {
           showNotif(response.data.message, "warning");
-        } else if (response.data.message.includes("Asistencia registrada correctamente")) {
+        } else if (
+          response.data.message.includes("Asistencia registrada correctamente")
+        ) {
           showNotif(response.data.message, "positive");
         } else {
           showNotif(response.data.message, "negative");
         }
       } catch (error) {
-        showNotif(error.response?.data?.message || "Error al registrar asistencia.", "negative");
+        showNotif(
+          error.response?.data?.message || "Error al registrar asistencia.",
+          "negative"
+        );
       } finally {
         loading.value = false;
-        nextTick(() => dniInput.value.focus());
+        dni.value = ""; // Limpiar el campo después de la consulta
+        nextTick(() => dniInput.value?.focus()); // Volver a enfocar el campo
       }
     };
 
@@ -119,7 +137,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Fondo degradado */
+/* Fondo con degradado */
 .background-gradient {
   background: linear-gradient(to bottom, #00A9C8, #00152C);
   min-height: 100vh;
@@ -134,10 +152,15 @@ export default defineComponent({
   max-width: 400px;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: transform 0.3s ease-in-out;
+}
+
+.login-form:hover {
+  transform: scale(1.03);
 }
 
 /* Avatar */
@@ -147,28 +170,34 @@ export default defineComponent({
   margin-top: -30px;
 }
 
-/* Input personalizado */
+/* Input estilizado */
 .custom-input input {
-  border: 2px solid rgba(255, 255, 255, 0.3) !important;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
   border-radius: 8px;
-  padding: 10px;
+  padding: 12px;
   color: white;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.2);
 }
 
-/* Botón desbloquear */
+.custom-input input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Botón personalizado */
 .btn-unlock {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   font-size: 1.1em;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: all 0.3s ease-in-out;
+  background: linear-gradient(to right, #14a76c, #00a9c8);
+  color: white;
 }
 
 .btn-unlock:hover {
-  background: #FFD700 !important;
-  color: #00152C !important;
+  background: linear-gradient(to right, #ffd700, #ff8c00) !important;
+  color: #001219 !important;
 }
 </style>
