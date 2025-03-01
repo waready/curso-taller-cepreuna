@@ -11,7 +11,7 @@
 
           <q-card-section class="q-mt-md text-center">
             <div class="text-h5 text-bold text-white">
-              Control de Asistencia Día 1 - Turno Tarde
+              Control de Asistencia Día 2
             </div>
           </q-card-section>
 
